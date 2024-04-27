@@ -3,7 +3,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Person } from './person';
 
-@Controller('/api')
+@Controller()
 export class AppController {
   constructor(
     private readonly configService: ConfigService,
