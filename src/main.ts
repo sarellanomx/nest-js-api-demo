@@ -1,33 +1,25 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
 
   const config = new DocumentBuilder()
-    .setTitle('NestJS API')
-    .setDescription('API descriptoion')
+    .setTitle('NestJS TCK POC API')
+    .setDescription('Esta es una api de prueba de NestJS')
     .setVersion('1.0')
     .setBasePath('api/v1')
-    .addTag('demo')
+    .setLicense('Apache 2.0 License', 'https://swagger.io/license/')
+    .addTag('NestJSPOC')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document, {
-    customSiteTitle: 'Backend Generator',
-    customfavIcon: 'https://avatars.githubusercontent.com/u/6936373?s=200&v=4',
-    customJs: [
-      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
-      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',
-    ],
-    customCssUrl: [
-      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
-      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.css',
-      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css',
-    ],
-  });
+  SwaggerModule.setup('/swagger', app, document);
 
+  // Enable global validation pipe
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 bootstrap();
